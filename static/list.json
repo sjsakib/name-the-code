@@ -1,0 +1,10 @@
+{
+  "merge-sort": {
+    "level": "easy",
+    "name": "Merge Sort",
+    "codes": {
+      "c++": "codes/merge-sort.cpp",
+      "python": "codes/merge-sort.py"
+    }
+  }
+}

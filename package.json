@@ -1,0 +1,19 @@
+{
+  "name": "recognize-the-algorithm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "sjsakib",
+  "license": "MIT",
+  "dependencies": {
+    "@zeit/next-css": "^1.0.0",
+    "axios": "^0.18.0",
+    "next": "^7.0.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
