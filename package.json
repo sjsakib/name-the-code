@@ -5,12 +5,17 @@
   "author": "sjsakib",
   "license": "MIT",
   "dependencies": {
+    "@types/react-syntax-highlighter": "^0.0.7",
     "@zeit/next-css": "^1.0.0",
+    "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "axios": "^0.18.0",
+    "bulma": "^0.7.2",
     "next": "^7.0.2",
+    "node-sass": "^4.9.4",
     "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "react-dom": "^16.6.0",
+    "react-syntax-highlighter": "^9.0.1"
   },
   "scripts": {
     "dev": "next",

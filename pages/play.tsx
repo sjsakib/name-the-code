@@ -1,11 +1,18 @@
 import React from 'react';
 import axios from 'axios';
+import Router from 'next/router';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import shuffle from '../lib/shuffle';
+import '../styles/index.scss';
 
 interface State {
-  currentAlgo: string;
   status: Status;
+  currentAlgo: string;
   preferredLan: string;
+  options: Array<string>;
+  currentAns: string;
+  message: string;
+  score: number;
   currentLan: string;
   codes: {
     [key: string]: { [key: string]: string };
@@ -28,19 +35,23 @@ enum Status {
 
 const defaultLan = 'c++';
 
-class Page extends React.Component<{}, State> {
+class Playground extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
+    console.log('constructor was called....')
     this.state = {
       currentAlgo: '',
+      score: 0,
+      currentAns: '',
+      message: '',
       status: Status.FETCHING_LIST,
       preferredLan: defaultLan,
       currentLan: defaultLan,
       codes: {},
       data: {},
-      list: []
+      list: [],
+      options: []
     };
-    console.log(process);
     this.fetchList();
   }
 
@@ -58,6 +69,7 @@ class Page extends React.Component<{}, State> {
           data,
           list,
           currentAlgo: list[0],
+          options: this.getOptions(list[0], list),
           status: Status.FETCHED_LIST
         });
       })
@@ -108,6 +120,69 @@ class Page extends React.Component<{}, State> {
       });
   }
 
+  handlePreferredLan(lan: string) {
+    this.setState({
+      preferredLan: lan,
+      currentLan: this.state.data[this.state.currentAlgo].codes[lan]
+        ? lan
+        : defaultLan
+    });
+  }
+
+  handleLanChange(lan: string) {
+    this.setState({ currentLan: lan });
+    if (this.state.codes[this.state.currentAlgo][lan] === undefined)
+      this.fetchLan(lan);
+  }
+
+  handleNext() {
+    const list = this.state.list;
+    const currentAlgo = this.state.currentAlgo;
+    const preferredLan = this.state.preferredLan;
+
+    const currentIndex = list.indexOf(currentAlgo);
+    if (currentIndex === list.length - 1) {
+      Router.push({ pathname: '/score', query: { score: this.state.score } });
+      return;
+    }
+    const newCurrentAlgo = list[currentIndex + 1];
+    this.setState({
+      currentAlgo: newCurrentAlgo,
+      options: this.getOptions(newCurrentAlgo, list),
+      message: '',
+      currentLan: this.state.data[currentAlgo].codes[preferredLan]
+        ? preferredLan
+        : defaultLan
+    });
+  }
+
+  getOptions(ans: string, list: Array<string>) {
+    const options = [ans];
+    // TODO: increase to 5 later
+    while (options.length !== 2) {
+      const i = Math.floor(Math.random() * list.length);
+      if (!options.includes(list[i])) {
+        options.push(list[i]);
+      }
+    }
+    return shuffle(options);
+  }
+
+  handleSubmit() {
+    let score = this.state.score,
+      message: string;
+    if (this.state.currentAlgo === this.state.currentAns) {
+      score++;
+      message = 'Right!';
+    } else {
+      message = 'Wrong!';
+    }
+    this.setState({
+      score,
+      message
+    });
+  }
+
   render() {
     const status = this.state.status;
     if (status === Status.FETCHING_LIST) {
@@ -120,16 +195,7 @@ class Page extends React.Component<{}, State> {
       return (
         <div>
           <p>Choose a preferred language</p>
-          <select
-            onChange={e => {
-              const lan = e.target.value;
-              this.setState({
-                preferredLan: lan,
-                currentLan: this.state.data[currentAlgo].codes[lan]
-                  ? lan
-                  : defaultLan
-              });
-            }}>
+          <select onChange={e => this.handlePreferredLan(e.target.value)}>
             <option value="c++">C++</option>
             <option value="python">Python</option>
             <option value="java">Java</option>
@@ -145,19 +211,13 @@ class Page extends React.Component<{}, State> {
     }
 
     const current = this.state.codes[currentAlgo];
-    const preferredLan = this.state.preferredLan;
     const currentLan = this.state.currentLan;
     const availableLans = Object.keys(this.state.data[currentAlgo].codes);
-    const list = this.state.list;
     return (
       <div>
         <select
           value={currentLan}
-          onChange={e => {
-            const lan = e.target.value;
-            this.setState({ currentLan: lan });
-            if (current[lan] === undefined) this.fetchLan(lan);
-          }}>
+          onChange={e => this.handleLanChange(e.target.value)}>
           {availableLans.map(lan => (
             <option key={lan} value={lan}>
               {lan}
@@ -166,22 +226,31 @@ class Page extends React.Component<{}, State> {
         </select>
         <div>
           {current && current[currentLan] ? (
-            <>
-              <pre>{current[currentLan]}</pre>
-              <button
-                onClick={() =>
-                  this.setState({
-                    currentAlgo: list[list.indexOf(currentAlgo) + 1],
-                    currentLan: this.state.data[currentAlgo].codes[preferredLan]
-                      ? preferredLan
-                      : defaultLan
-                  })
-                }>
-                Next
-              </button>
-            </>
+            <div id="code">
+              <SyntaxHighlighter language={currentLan}>
+                {current[currentLan]}
+              </SyntaxHighlighter>
+            </div>
           ) : (
-            <div>Loading Code...</div>
+            'Loading Code...'
+          )}
+          {this.state.options.map(op => (
+            <div key={op}>
+              <input
+                type="radio"
+                onChange={e => this.setState({ currentAns: e.target.value })}
+                value={op}
+                name="SelectionInput"
+              />
+              {this.state.data[op].name}
+              <br />
+            </div>
+          ))}
+          {this.state.message && <div>{this.state.message}</div>}
+          {this.state.message === '' ? (
+            <button onClick={() => this.handleSubmit()}>Submit</button>
+          ) : (
+            <button onClick={() => this.handleNext()}>Next</button>
           )}
         </div>
       </div>
@@ -189,4 +258,4 @@ class Page extends React.Component<{}, State> {
   }
 }
 
-export default Page;
+export default Playground;

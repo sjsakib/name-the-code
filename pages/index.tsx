@@ -1,18 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
 
-class App extends React.Component {
+class Page extends React.Component {
   render() {
     return (
       <div>
         Hello World!
-        <br />
-        <Link href="/play">
+        <Link href='play'>
           <a>start playing</a>
-        </Link>
+         </Link>
+        <br />
       </div>
     );
   }
 }
 
-export default App;
+export default Page;
