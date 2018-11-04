@@ -13,6 +13,7 @@ interface State {
   currentAns: string;
   message: string;
   score: number;
+  life: number;
   currentLan: string;
   codes: {
     [key: string]: { [key: string]: string };
@@ -42,6 +43,7 @@ class Playground extends React.Component<{}, State> {
     this.state = {
       currentAlgo: '',
       score: 0,
+      life: 3,
       currentAns: '',
       message: '',
       status: Status.FETCHING_LIST,
@@ -141,7 +143,7 @@ class Playground extends React.Component<{}, State> {
     const preferredLan = this.state.preferredLan;
 
     const currentIndex = list.indexOf(currentAlgo);
-    if (currentIndex === list.length - 1) {
+    if (currentIndex === list.length - 1 || this.state.life === 0) {
       Router.push({ pathname: '/score', query: { score: this.state.score } });
       return;
     }
@@ -169,17 +171,19 @@ class Playground extends React.Component<{}, State> {
   }
 
   handleSubmit() {
-    let score = this.state.score,
-      message: string;
+    let { score, life } = this.state;
+    let message: string;
     if (this.state.currentAlgo === this.state.currentAns) {
       score++;
       message = 'Right!';
     } else {
+      life--;
       message = 'Wrong!';
     }
     this.setState({
       score,
-      message
+      message,
+      life
     });
   }
 
