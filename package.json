@@ -5,6 +5,7 @@
   "author": "sjsakib",
   "license": "MIT",
   "dependencies": {
+    "@types/react-redux": "^6.0.9",
     "@types/react-syntax-highlighter": "^0.0.7",
     "@zeit/next-css": "^1.0.0",
     "@zeit/next-sass": "^1.0.1",
@@ -15,7 +16,10 @@
     "node-sass": "^4.9.4",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-syntax-highlighter": "^9.0.1"
+    "react-redux": "^5.1.0",
+    "react-syntax-highlighter": "^9.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "dev": "next",
