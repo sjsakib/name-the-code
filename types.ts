@@ -1,5 +1,11 @@
 import { Action } from 'redux';
 
+export interface User {
+    uid: string;
+    name: string;
+    photo: string
+}
+
 export interface State {
   status: Status;
   currentAlgo: string;
@@ -21,6 +27,10 @@ export interface State {
     };
   };
   list: Array<string>;
+
+  authenticating: boolean;
+  loadingUI: boolean;
+  user?: User;
 }
 
 export enum Status {
@@ -32,15 +42,26 @@ export enum Status {
 export const defaultLan = 'c++';
 
 export interface RootAction extends Action {
-  [key: string]: any
+  [key: string]: any;
+}
+
+
+// Home
+export interface HomeProps {
+  loadingUI: boolean;
+  user?: User;
+}
+export interface HomeMethods {
+  startUI: () => void;
 }
 
 
 // Game
 export interface GameProps {
   status: Status;
-  options: Array<{ name: string, id: string }>;
+  options: Array<{ name: string; id: string }>;
   message: string;
+  user?: User
 }
 export interface GameMethods {
   fetchList: () => void;
@@ -49,7 +70,6 @@ export interface GameMethods {
   next: () => void;
   submit: (ans: string) => void;
 }
-
 
 // CodePanel
 export interface CodePanelProps {

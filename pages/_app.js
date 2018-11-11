@@ -1,19 +1,31 @@
-import App, {Container} from 'next/app'
-import React from 'react'
-import withReduxStore from '../lib/with-redux-store'
-import { Provider } from 'react-redux'
+import App, { Container } from 'next/app';
+import React from 'react';
+import { Provider, connect } from 'react-redux';
+import withReduxStore from '../lib/with-redux-store';
+import { authenticate } from '../actions';
+import { Status } from '../types';
 
 class MyApp extends App {
-  render () {
-    const {Component, pageProps, reduxStore} = this.props
+  componentDidMount() {
+    this.props.reduxStore.dispatch(authenticate);
+  }
+  render() {
+    const { Component, pageProps, reduxStore } = this.props;
     return (
       <Container>
         <Provider store={reduxStore}>
-          <Component {...pageProps} />
+          <ComponentContainer>
+            <Component {...pageProps} />
+          </ComponentContainer>
         </Provider>
       </Container>
-    )
+    );
   }
 }
 
-export default withReduxStore(MyApp)
+const ComponentContainer = connect(({ authenticating }) => ({ authenticating }))(
+  (props) =>
+    (props.authenticating ? <div>Loading</div> : props.children)
+);
+
+export default withReduxStore(MyApp);

@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import { Status, GameProps, GameMethods } from '../types';
 import CodePanelContainer from '../containers/CodePanelContainer';
 
@@ -10,6 +11,12 @@ export default class Game extends React.Component<
     super(props);
     this.state = {};
     props.fetchList();
+  }
+
+  componentDidMount() {
+    if (this.props.user === undefined) {
+      Router.push({ pathname: '/' });
+    }
   }
 
   render() {
@@ -54,7 +61,9 @@ export default class Game extends React.Component<
         ))}
         {message && <div>{message}</div>}
         {message === '' ? (
-          currentAns && <button onClick={() => submit(currentAns)}>Submit</button>
+          currentAns && (
+            <button onClick={() => submit(currentAns)}>Submit</button>
+          )
         ) : (
           <button onClick={() => next()}>Next</button>
         )}

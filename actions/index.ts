@@ -1,10 +1,17 @@
 import axios from 'axios';
 import { Dispatch, Action } from 'redux';
 import Router from 'next/router';
+import firebase from '../lib/firebase';
 import { getOptions } from '../reducers';
 import { State, defaultLan, Status } from '../types';
 
+let firebaseui: any;
+if (typeof window !== 'undefined') {
+  firebaseui = require('firebaseui');
+}
+
 export const actionTypes = {
+  UPDATE_USER: 'UPDATE_USER',
   UPDATE_LIST: 'UPDATE_LIST',
   UPDATE_STATUS: 'UPDATE_STATUS',
   UPDATE_CODE: 'UPDATE_CODE',
@@ -101,4 +108,51 @@ export function next(dispatch: Dispatch<Action>, getState: () => State) {
         : defaultLan
     }
   });
+}
+
+export function authenticate(dispatch: Dispatch<Action>) {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      dispatch({
+        type: actionTypes.UPDATE,
+        updates: {
+          user: {
+            uid: user.uid,
+            name: user.displayName,
+            photo: user.photoURL
+          }
+        }
+      });
+    }
+    dispatch({
+      type: actionTypes.UPDATE,
+      updates: { authenticating: false }
+    });
+  });
+}
+
+export function startUI(dispatch: Dispatch<Action>) {
+  const uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: () => {
+        // we don't want firebaseui to redirect after successful sign-in
+        // So we return false
+        return false;
+      },
+      uiShown: () => {
+        // Sign-in UI finished loading
+        dispatch({
+          type: actionTypes.UPDATE,
+          updates: { loadingUI: false }
+        });
+      }
+    },
+    signInFlow: 'popup',
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.GithubAuthProvider.PROVIDER_ID
+    ]
+  };
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
+  ui.start('#firebaseui-auth-container', uiConfig);
 }

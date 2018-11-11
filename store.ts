@@ -15,7 +15,9 @@ export const initialState: State = {
   codes: {},
   data: {},
   list: [],
-  options: []
+  options: [],
+  authenticating: true,
+  loadingUI: true,
 };
 
 

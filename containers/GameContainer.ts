@@ -17,10 +17,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>): GameMethods => ({
 });
 
 const mapStateToProps = (state: State): GameProps => {
-  const { status, options, message, data } = state;
+  const { status, options, message, data, user } = state;
   return {
     status,
     message,
+    user,
     options: options.map(op => ({ name: data[op].name, id: op }))
   };
 };
