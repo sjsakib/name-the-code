@@ -10,13 +10,13 @@ export default class Game extends React.Component<
   constructor(props: GameProps & GameMethods) {
     super(props);
     this.state = {};
-    props.fetchList();
   }
 
   componentDidMount() {
     if (this.props.user === undefined) {
       Router.push({ pathname: '/' });
     }
+    this.props.fetchList();
   }
 
   render() {
@@ -38,6 +38,7 @@ export default class Game extends React.Component<
           <button
             onClick={() => {
               this.props.fetchCodes();
+              this.props.reset();
             }}>
             Continue
           </button>

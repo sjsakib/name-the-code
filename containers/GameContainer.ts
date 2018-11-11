@@ -2,10 +2,19 @@ import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import Game from '../components/Game';
 import { State, GameProps, GameMethods } from '../types';
-import { fetchCodes, submit, next, setPreferredLan, fetchList } from '../actions';
+import {
+  fetchCodes,
+  submit,
+  next,
+  setPreferredLan,
+  fetchList,
+  reset
+} from '../actions';
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): GameMethods => ({
   fetchList: () => dispatch(fetchList),
+
+  reset: () => dispatch(reset),
 
   fetchCodes: () => dispatch(fetchCodes),
 

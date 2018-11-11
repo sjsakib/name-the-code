@@ -32,6 +32,13 @@ export function fetchList(dispatch: Dispatch<Action>) {
     });
 }
 
+export function reset(_: any, getState: () => State) {
+  const { user } = getState();
+  firebase.firestore().collection('users').doc(user!.uid).update({
+    passed: []
+  });
+}
+
 export function fetchCodes(dispatch: Dispatch<Action>, getState: () => State) {
   const { data, list, preferredLan } = getState();
   list.forEach(id => {
@@ -80,7 +87,31 @@ export function changeLan(lan: string) {
 }
 
 export function submit(ans: string) {
-  return { type: actionTypes.SUBMIT, ans };
+  return function(dispatch: Dispatch<Action>, getState: () => State) {
+    let { score, life, currentAlgo, message, data, user } = getState();
+    if (currentAlgo === ans) {
+      score++;
+      message = 'Right!';
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user!.uid)
+        .update({
+          passed: firebase.firestore.FieldValue.arrayUnion(data[ans].name)
+        });
+    } else {
+      life--;
+      message = 'Wrong!';
+    }
+    dispatch({
+      type: actionTypes.UPDATE,
+      updates: {
+        score,
+        life,
+        message
+      }
+    });
+  };
 }
 
 export function setPreferredLan(lan: string) {
@@ -111,7 +142,7 @@ export function next(dispatch: Dispatch<Action>, getState: () => State) {
 }
 
 export function authenticate(dispatch: Dispatch<Action>) {
-  firebase.auth().onAuthStateChanged(user => {
+  firebase.auth().onAuthStateChanged(async user => {
     if (user) {
       dispatch({
         type: actionTypes.UPDATE,
@@ -123,6 +154,23 @@ export function authenticate(dispatch: Dispatch<Action>) {
           }
         }
       });
+      let githubId = '';
+      const githubData = user.providerData.find(
+        d => d !== null && d.providerId === 'github.com'
+      );
+      if (githubData) {
+        githubId = (await axios.get(
+          'https://api.github.com/user/' + githubData.uid
+        )).data.login;
+      }
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user.uid)
+        .set(
+          { name: user.displayName, photo: user.photoURL, githubId },
+          { merge: true }
+        );
     }
     dispatch({
       type: actionTypes.UPDATE,

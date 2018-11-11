@@ -17,6 +17,9 @@ export default (state: State = initialState, action: RootAction) => {
         ...{
           data,
           list,
+          score: 0,
+          message: '',
+          currentAns: '',
           currentAlgo: list[0],
           options: getOptions(list[0], list, 2),
           status: Status.FETCHED_LIST
@@ -56,23 +59,6 @@ export default (state: State = initialState, action: RootAction) => {
       };
     case actionTypes.CHANGE_LAN:
       return { ...state, ...{ currentLan: action.lan } };
-    case actionTypes.SUBMIT:
-      let { score, life, currentAlgo, message } = state;
-      if (currentAlgo === action.ans) {
-        score++;
-        message = 'Right!';
-      } else {
-        life--;
-        message = 'Wrong!';
-      }
-      return {
-        ...state,
-        ...{
-          score,
-          life,
-          message
-        }
-      };
     case actionTypes.UPDATE:
       return { ...state, ...action.updates };
     default:

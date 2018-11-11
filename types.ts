@@ -65,6 +65,7 @@ export interface GameProps {
 }
 export interface GameMethods {
   fetchList: () => void;
+  reset: () => void;
   fetchCodes: () => void;
   setPreferredLan: (lan: string) => void;
   next: () => void;
