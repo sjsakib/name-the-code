@@ -5,9 +5,10 @@ import firebase from '../lib/firebase';
 import { getOptions } from '../reducers';
 import { State, defaultLan, Status } from '../types';
 
-let firebaseui: any;
+let firebaseui, ui: any;
 if (typeof window !== 'undefined') {
   firebaseui = require('firebaseui');
+  ui = new firebaseui.auth.AuthUI(firebase.auth());
 }
 
 export const actionTypes = {
@@ -201,6 +202,5 @@ export function startUI(dispatch: Dispatch<Action>) {
       firebase.auth.GithubAuthProvider.PROVIDER_ID
     ]
   };
-  const ui = new firebaseui.auth.AuthUI(firebase.auth());
   ui.start('#firebaseui-auth-container', uiConfig);
 }
