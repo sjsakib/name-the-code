@@ -17,8 +17,11 @@ class Page extends React.Component<HomeMethods & HomeProps> {
     return (
       <div>
         Hello World!
-        <Link href="play">
+        <Link href="/play">
           <a>start playing</a>
+        </Link>
+         <Link href="/score">
+          <a>score</a>
         </Link>
         <br />
         <div id="firebaseui-auth-container" />

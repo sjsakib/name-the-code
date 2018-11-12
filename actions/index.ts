@@ -120,11 +120,11 @@ export function setPreferredLan(lan: string) {
 }
 
 export function next(dispatch: Dispatch<Action>, getState: () => State) {
-  const { list, currentAlgo, preferredLan, life, score, data } = getState();
+  const { list, currentAlgo, preferredLan, life, user, data } = getState();
 
   const currentIndex = list.indexOf(currentAlgo);
   if (currentIndex === list.length - 1 || life === 0) {
-    Router.push({ pathname: '/score', query: { score } });
+    Router.push({ pathname: '/score', query: { uid: user!.uid } });
     return;
   }
   const newCurrentAlgo = list[currentIndex + 1];

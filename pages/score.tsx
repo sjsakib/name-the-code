@@ -1,11 +1,50 @@
-import * as React from 'react';
+import React from 'react';
 import { withRouter, SingletonRouter } from 'next/router';
+import firebase from '../lib/firebase';
 
-class Score extends React.Component<{router: SingletonRouter}, {}> {
+interface Profile {
+  name: string;
+  photo: string;
+  github: string[];
+  passed: string[];
+}
+
+interface Props {
+  profile?: Profile;
+  error?: string;
+}
+
+class Score extends React.Component<Props, SingletonRouter> {
+  static async getInitialProps({ query }: { query: any }) {
+    let profile, error;
+    try {
+      const uid = query.uid;
+      profile = await firebase
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .get();
+      if (!profile.exists) {
+        error = 'Profile Not Found!';
+      }
+    } catch (e) {
+      error = 'Invalid Request!';
+    }
+    return { profile: profile && profile.data(), error};
+  }
+
   render() {
-    const  query  = this.props.router.query;
-    const score = query ? query.score : 0;
-    return <div>You scored {score} points</div>
+    const { profile, error } = this.props;
+    if (error) {
+      return <div>{error}</div>
+    } else {
+      return (
+      <div>
+        {profile!.name} - {profile!.passed.length}
+        {profile!.passed.map( algo => <li>{algo}</li>)}
+      </div>
+    );
+    }
   }
 }
 
