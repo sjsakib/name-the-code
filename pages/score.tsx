@@ -14,7 +14,7 @@ interface Props {
   error?: string;
 }
 
-class Score extends React.Component<Props, SingletonRouter> {
+class Score extends React.Component<Props & { router: SingletonRouter}> {
   static async getInitialProps({ query }: { query: any }) {
     let profile, error;
     try {
@@ -25,10 +25,10 @@ class Score extends React.Component<Props, SingletonRouter> {
         .doc(uid)
         .get();
       if (!profile.exists) {
-        error = 'Profile Not Found!';
+        error = 'Profile not found!';
       }
     } catch (e) {
-      error = 'Invalid Request!';
+      error = 'Page not found!';
     }
     return { profile: profile && profile.data(), error};
   }

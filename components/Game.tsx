@@ -20,8 +20,10 @@ export default class Game extends React.Component<
   }
 
   render() {
-    const { status, options, message, submit, next } = this.props;
+    const { status, options, message, submit, next, authenticating } = this.props;
     const { currentAns } = this.state;
+    if (authenticating) return <div>Loading </div>
+    
     if (status === Status.FETCHING_LIST) {
       return <div>Fetching List</div>;
     }

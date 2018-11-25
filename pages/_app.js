@@ -26,17 +26,11 @@ class MyApp extends App {
     return (
       <Container>
         <Provider store={reduxStore}>
-          <ComponentContainer>
-            <Component {...pageProps} />
-          </ComponentContainer>
+          <Component {...pageProps} />
         </Provider>
       </Container>
     );
   }
 }
-
-const ComponentContainer = connect(({ authenticating }) => ({
-  authenticating
-}))(props => (props.authenticating ? <div>Loading</div> : props.children));
 
 export default withReduxStore(MyApp);

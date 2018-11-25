@@ -49,6 +49,7 @@ export interface RootAction extends Action {
 // Home
 export interface HomeProps {
   loadingUI: boolean;
+  authenticating: boolean;
   user?: User;
 }
 export interface HomeMethods {
@@ -58,6 +59,7 @@ export interface HomeMethods {
 
 // Game
 export interface GameProps {
+  authenticating: boolean;
   status: Status;
   options: Array<{ name: string; id: string }>;
   message: string;

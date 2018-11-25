@@ -7,33 +7,40 @@ import { startUI } from '../actions';
 import 'firebaseui/dist/firebaseui.css';
 
 class Page extends React.Component<HomeMethods & HomeProps> {
-  componentDidMount() {
-    if (this.props.user === undefined) {
+  componentDidUpdate() {
+    const {user, authenticating} = this.props;
+    if (user === undefined  && !authenticating) {
       this.props.startUI();
     }
   }
   render() {
-    const { user } = this.props;
+    const { user, authenticating } = this.props;
+    if (authenticating) return <div>Loading</div>;
     return (
       <div>
-        Hello World!
-        <Link href="/play">
-          <a>start playing</a>
-        </Link>
-         <Link href="/score">
-          <a>score</a>
-        </Link>
-        <br />
+        {user ? (
+          <>
+            <Link href="/play">
+              <a>start playing</a>
+            </Link>
+            <br />
+            <Link href={'/score?uid=' + user.uid}>
+              <a>score</a>
+            </Link>
+            <br />
+          </>
+        ) : (
+          <div>Sign in to continue</div>
+        )}
         <div id="firebaseui-auth-container" />
-        {user && <div>{user.name}</div>}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: State): HomeProps => {
-  const { loadingUI, user } = state;
-  return { loadingUI, user };
+  const { loadingUI, user, authenticating } = state;
+  return { loadingUI, user, authenticating };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): HomeMethods => ({
