@@ -5,22 +5,24 @@ import { User, State } from '../types';
 import firebase from '../lib/firebase';
 import { Container, Menu, Image, Dropdown } from 'semantic-ui-react';
 
-class Decorator extends React.Component<{ user?: User }> {
+class Decorator extends React.Component<{
+  user?: User;
+  active?: 'home' | 'leaderboard';
+}> {
   render() {
-    const { user, children } = this.props;
+    const { user, children, active } = this.props;
     return (
       <Container>
         <Menu secondary pointing>
           <Link href="/">
-            <Menu.Item active as="a">
+            <Menu.Item active={active === 'home'} as="a">
               Home
             </Menu.Item>
           </Link>
-          <Link href="/play">
-            <Menu.Item as="a">Play</Menu.Item>
-          </Link>
-          <Link href="/play">
-            <Menu.Item as="a">Leader Board</Menu.Item>
+          <Link href="/leaderboard">
+            <Menu.Item as="a" active={active === 'leaderboard'}>
+              Leader Board
+            </Menu.Item>
           </Link>
           {user && (
             <Menu.Menu position="right">
@@ -32,9 +34,7 @@ class Decorator extends React.Component<{ user?: User }> {
                   <Dropdown.Menu>
                     <Dropdown.Item>
                       <Link href={'/score?uid=' + user.uid}>
-                        <a>
-                          {user.name}
-                        </a>
+                        <a>{user.name}</a>
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item onClick={() => firebase.auth().signOut()}>

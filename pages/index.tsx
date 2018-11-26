@@ -6,6 +6,7 @@ import { State, HomeMethods, HomeProps } from '../types';
 import { startUI } from '../actions';
 import Loading from '../components/Loading';
 import Decorator from '../components/Decorator';
+import { Header, Button } from 'semantic-ui-react';
 import 'firebaseui/dist/firebaseui.css';
 
 class Page extends React.Component<HomeMethods & HomeProps> {
@@ -19,22 +20,18 @@ class Page extends React.Component<HomeMethods & HomeProps> {
     const { user, authenticating } = this.props;
     if (authenticating) return <Loading message="Authenticating" />;
     return (
-      <Decorator>
-        {user ? (
-          <>
+      <Decorator active="home">
+        <div className="heading">
+          <Header as="h1" content="Name The Code" />
+          {user ? (
             <Link href="/play">
-              <a>start playing</a>
+              <Button as="a">Start Playing </Button>
             </Link>
-            <br />
-            <Link href={'/score?uid=' + user.uid}>
-              <a>score</a>
-            </Link>
-            <br />
-          </>
-        ) : (
-          <div>Sign in to continue</div>
-        )}
-        <div id="firebaseui-auth-container" />
+          ) : (
+            <div>Sign in to continue</div>
+          )}
+          <div id="firebaseui-auth-container" />
+        </div>
       </Decorator>
     );
   }

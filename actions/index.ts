@@ -155,12 +155,12 @@ export function authenticate(dispatch: Dispatch<Action>) {
           }
         }
       });
-      let githubId = '';
+      let github = '';
       const githubData = user.providerData.find(
         d => d !== null && d.providerId === 'github.com'
       );
       if (githubData) {
-        githubId = (await axios.get(
+        github = (await axios.get(
           'https://api.github.com/user/' + githubData.uid
         )).data.login;
       }
@@ -169,7 +169,7 @@ export function authenticate(dispatch: Dispatch<Action>) {
         .collection('users')
         .doc(user.uid)
         .set(
-          { name: user.displayName, photo: user.photoURL, githubId },
+          { name: user.displayName, photo: user.photoURL, github },
           { merge: true }
         );
     }
