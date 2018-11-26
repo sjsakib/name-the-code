@@ -1,0 +1,22 @@
+#code {
+  max-width: 600px;
+  margin: 20px auto;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+pre {
+  margin: 0;
+}
+
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loading-message {
+  margin-top: 10px;
+}

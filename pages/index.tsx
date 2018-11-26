@@ -4,20 +4,22 @@ import { Dispatch, Action } from 'redux';
 import Link from 'next/link';
 import { State, HomeMethods, HomeProps } from '../types';
 import { startUI } from '../actions';
+import Loading from '../components/Loading';
+import Decorator from '../components/Decorator';
 import 'firebaseui/dist/firebaseui.css';
 
 class Page extends React.Component<HomeMethods & HomeProps> {
   componentDidUpdate() {
-    const {user, authenticating} = this.props;
-    if (user === undefined  && !authenticating) {
+    const { user, authenticating } = this.props;
+    if (user === undefined && !authenticating) {
       this.props.startUI();
     }
   }
   render() {
     const { user, authenticating } = this.props;
-    if (authenticating) return <div>Loading</div>;
+    if (authenticating) return <Loading message="Authenticating" />;
     return (
-      <div>
+      <Decorator>
         {user ? (
           <>
             <Link href="/play">
@@ -33,7 +35,7 @@ class Page extends React.Component<HomeMethods & HomeProps> {
           <div>Sign in to continue</div>
         )}
         <div id="firebaseui-auth-container" />
-      </div>
+      </Decorator>
     );
   }
 }

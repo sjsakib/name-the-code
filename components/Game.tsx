@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { Status, GameProps, GameMethods } from '../types';
 import CodePanelContainer from '../containers/CodePanelContainer';
+import Loading from '../components/Loading'
 
 export default class Game extends React.Component<
   GameProps & GameMethods,
@@ -22,10 +23,10 @@ export default class Game extends React.Component<
   render() {
     const { status, options, message, submit, next, authenticating } = this.props;
     const { currentAns } = this.state;
-    if (authenticating) return <div>Loading </div>
+    if (authenticating) return <Loading message="Authenticating" />
     
     if (status === Status.FETCHING_LIST) {
-      return <div>Fetching List</div>;
+      return <Loading message="Fetching list" />;
     }
 
     if (status === Status.FETCHED_LIST) {

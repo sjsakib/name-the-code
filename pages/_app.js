@@ -5,6 +5,7 @@ import { Provider, connect } from 'react-redux';
 import withReduxStore from '../lib/with-redux-store';
 import { authenticate } from '../actions';
 import { Status } from '../types';
+import '../styles/index.css';
 
 // css/sass bug workaround
 Router.events.on('routeChangeComplete', () => {

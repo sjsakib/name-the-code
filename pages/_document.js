@@ -11,6 +11,10 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <title>Name The Code</title>
+          <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"
+          />
         </Head>
         <body>
           <Main />
