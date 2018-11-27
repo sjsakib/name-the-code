@@ -39,7 +39,7 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
 
   render() {
     const { profile, error } = this.props;
-    const { name, photo, github, passed, time } = profile || {} as Profile;
+    const { name, photo, github, passed, time } = profile || ({} as Profile);
     return (
       <Decorator>
         {error ? (
@@ -59,16 +59,23 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
                 size="large"
                 icon="flag checkered"
                 content="SCORE"
-                detail={passed.length}
+                detail={passed ? passed.length : 'NaN'}
               />
               <Label
                 color="violet"
                 size="large"
                 icon="hourglass outline"
                 content="TIME"
-                detail={([Math.floor(time/60), time %60].map(x => ('0' + x).slice(-2))).join(':')}
-              /></div>
-            {passed.map(algo => <li key={algo}>{algo}</li>)}
+                detail={
+                  passed
+                    ? [Math.floor(time / 60), time % 60]
+                        .map(x => ('0' + x).slice(-2))
+                        .join(':')
+                    : 'NaN'
+                }
+              />
+            </div>
+            {passed && passed.map(algo => <li key={algo}>{algo}</li>)}
           </div>
         )}
       </Decorator>

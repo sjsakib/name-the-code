@@ -108,7 +108,16 @@ export function changeLan(lan: string) {
 
 export function submit(ans: string) {
   return function(dispatch: Dispatch<Action>, getState: () => State) {
-    let { score, life, currentAlgo, message, data, user, list, time } = getState();
+    let {
+      score,
+      life,
+      currentAlgo,
+      message,
+      data,
+      user,
+      list,
+      time
+    } = getState();
     if (currentAlgo === ans) {
       score++;
       message = 'Right!';
@@ -196,6 +205,13 @@ export function authenticate(dispatch: Dispatch<Action>) {
           { name: user.displayName, photo: user.photoURL, github },
           { merge: true }
         );
+    } else {
+      dispatch({
+        type: actionTypes.UPDATE,
+        updates: {
+          user: undefined
+        }
+      });
     }
     dispatch({
       type: actionTypes.UPDATE,

@@ -11,6 +11,12 @@ import 'firebaseui/dist/firebaseui.css';
 
 class Page extends React.Component<HomeMethods & HomeProps> {
   componentDidUpdate() {
+    this.startUI();
+  }
+  componentDidMount() {
+    this.startUI();
+  }
+  startUI() {
     const { user, authenticating } = this.props;
     if (user === undefined && !authenticating) {
       this.props.startUI();
