@@ -13,7 +13,7 @@ class Decorator extends React.Component<{
     const { user, children, active } = this.props;
     return (
       <Container>
-        <Menu secondary pointing>
+        <Menu borderless>
           <Link href="/">
             <Menu.Item active={active === 'home'} as="a">
               Home
