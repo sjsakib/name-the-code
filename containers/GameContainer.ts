@@ -37,9 +37,14 @@ const mapStateToProps = (state: State): GameProps => {
     authenticating,
     preferredLan,
     currentLan,
-    currentAlgo
+    currentAlgo,
+    score,
+    life,
+    time
   } = state;
   const current = state.codes[currentAlgo];
+  const min = ('0' + (time / 60)).slice(-2);
+  const sec = ('0' + (time % 60)).slice(-2);
   return {
     status,
     message,
@@ -47,6 +52,9 @@ const mapStateToProps = (state: State): GameProps => {
     authenticating,
     preferredLan,
     currentLan,
+    score,
+    life,
+    time: min + ':' + sec,
     options: options.map(op => ({ name: data[op].name, id: op })),
     currentLanOptions: data[currentAlgo] && Object.keys(data[currentAlgo].codes).map(lan => ({
       text: lan,

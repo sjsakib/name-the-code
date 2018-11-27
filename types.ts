@@ -67,8 +67,11 @@ export interface GameProps {
   user?: User;
   preferredLan: string;
   currentLan: string;
-  currentLanOptions: { text: string; value: string}[];
-  code: string;
+  currentLanOptions?: { text: string; value: string}[];
+  code?: string;
+  life: number,
+  score: number;
+  time: string;
 }
 export interface GameMethods {
   fetchList: () => void;

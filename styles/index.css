@@ -17,14 +17,10 @@
 
 .game {
   flex-grow: 1;
-}
-
-/*#code {
-  overflow: auto;
   display: flex;
-  align-items: center;
   justify-content: center;
-}*/
+  align-items: center;
+}
 
 #code > div {
   width: 100%;
@@ -33,6 +29,17 @@
 #code > div > pre {
   min-height: 100vh;
   margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+}
+
+.ans-option {
+  display: block;
+  margin: 10px;
 }
 
 .loading-container {

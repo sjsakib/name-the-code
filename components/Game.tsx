@@ -2,7 +2,14 @@ import React from 'react';
 import Router from 'next/router';
 import { Status, GameProps, GameMethods } from '../types';
 import Loading from '../components/Loading';
-import { Dropdown, Button, Grid } from 'semantic-ui-react';
+import {
+  Dropdown,
+  Button,
+  Icon,
+  Label,
+  Message,
+  Checkbox
+} from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 export default class Game extends React.Component<
@@ -32,7 +39,10 @@ export default class Game extends React.Component<
       preferredLan,
       currentLan,
       currentLanOptions,
-      code
+      code,
+      life,
+      score,
+      time
     } = this.props;
     const { currentAns } = this.state;
     if (authenticating) return <Loading message="Authenticating" />;
@@ -87,32 +97,68 @@ export default class Game extends React.Component<
           </div>
         </div>
         <div className="game">
-          <Dropdown
-            selection
-            options={currentLanOptions}
-            defaultValue={currentLan}
-            onChange={(e, v) => this.props.changeLan(v.value as string)}
-          />
-          {options.map(op => (
-            <div key={op.id}>
-              <input
-                type="radio"
-                onChange={e => this.setState({ currentAns: e.target.value })}
-                value={op.id}
-                name="SelectionInput"
+          <div>
+            <div className="row">
+              <Label
+                color="green"
+                icon="flag"
+                content="SCORE"
+                size="big"
+                detail={score}
               />
-              {op.name}
-              <br />
             </div>
-          ))}
-          {message && <div>{message}</div>}
-          {message === '' ? (
-            currentAns && (
-              <Button onClick={() => submit(currentAns)}>Submit</Button>
-            )
-          ) : (
-            <button onClick={() => next()}>Next</button>
-          )}
+            <div className="row">
+              <Label
+                color="red"
+                size="large"
+                icon="heart outline"
+                content="LIFE"
+                detail={life}
+              />
+              <Label
+                color="violet"
+                size="large"
+                icon="hourglass outline"
+                content="TIME"
+                detail={time}
+              />
+            </div>
+            <div className="row">
+              <Dropdown
+                selection
+                options={currentLanOptions}
+                defaultValue={currentLan}
+                onChange={(e, v) => this.props.changeLan(v.value as string)}
+              />
+            </div>
+            {options.map(op => (
+              <Checkbox
+                className="ans-option"
+                label={op.name}
+                key={op.id}
+                checked={this.state.currentAns === op.id}
+                onClick={() => this.setState({ currentAns: op.id })}
+              />
+            ))}
+            {message && (
+              <div className="row">
+                <Message
+                  header={message}
+                  success={message === 'Right!'}
+                  error={message === 'Wrong!'}
+                />
+              </div>
+            )}
+            <div className="row">
+              {message === '' ? (
+                currentAns && (
+                  <Button onClick={() => submit(currentAns)}>Submit</Button>
+                )
+              ) : (
+                <Button onClick={() => next()}>Next</Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
