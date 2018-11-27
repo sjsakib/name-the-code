@@ -7,6 +7,7 @@ export const initialState: State = {
   currentAlgo: '',
   score: 0,
   life: 3,
+  time: 0,
   currentAns: '',
   message: '',
   status: Status.FETCHING_LIST,

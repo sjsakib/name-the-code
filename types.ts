@@ -15,6 +15,7 @@ export interface State {
   message: string;
   score: number;
   life: number;
+  time: number;
   currentLan: string;
   codes: {
     [key: string]: { [key: string]: string };
@@ -39,7 +40,7 @@ export enum Status {
   FETCHING_CODES
 }
 
-export const defaultLan = 'c++';
+export const defaultLan = 'cpp';
 
 export interface RootAction extends Action {
   [key: string]: any;
@@ -63,7 +64,11 @@ export interface GameProps {
   status: Status;
   options: Array<{ name: string; id: string }>;
   message: string;
-  user?: User
+  user?: User;
+  preferredLan: string;
+  currentLan: string;
+  currentLanOptions: { text: string; value: string}[];
+  code: string;
 }
 export interface GameMethods {
   fetchList: () => void;
@@ -72,14 +77,6 @@ export interface GameMethods {
   setPreferredLan: (lan: string) => void;
   next: () => void;
   submit: (ans: string) => void;
-}
-
-// CodePanel
-export interface CodePanelProps {
-  code: string;
-  availableLans: string[];
-  currentLan: string;
-}
-export interface CodePanelMethods {
   changeLan: (lan: string) => void;
 }
+

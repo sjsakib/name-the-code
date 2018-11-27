@@ -1,11 +1,37 @@
-#code {
-  max-width: 600px;
-  margin: 20px auto;
-  max-height: 500px;
-  overflow-y: scroll;
+.grid {
+  display: flex;
 }
 
-pre {
+@media only screen and (max-width: 767px) {
+  .grid {
+    flex-direction: column;
+  }
+}
+
+.code-panel {
+  flex-grow: 1;
+  max-width: 650px;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.game {
+  flex-grow: 1;
+}
+
+/*#code {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}*/
+
+#code > div {
+  width: 100%;
+}
+
+#code > div > pre {
+  min-height: 100vh;
   margin: 0;
 }
 
@@ -21,7 +47,6 @@ pre {
   margin-top: 10px;
 }
 
-
 .heading {
   min-height: 80vh;
   display: flex;
@@ -35,4 +60,16 @@ pre {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.lan-chooser {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-button {
+  margin-top: 30px !important;
 }

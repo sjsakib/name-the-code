@@ -3,7 +3,7 @@
     "level": "easy",
     "name": "Merge Sort",
     "codes": {
-      "c++": "codes/merge-sort.cpp",
+      "cpp": "codes/merge-sort.cpp",
       "python": "codes/merge-sort.py"
     }
   },
@@ -11,7 +11,7 @@
     "level": "medium",
     "name": "Knuth Morris Pratt Pattern Searching",
     "codes": {
-      "c++": "codes/kmp.cpp",
+      "cpp": "codes/kmp.cpp",
       "python": "codes/kmp.py"
     }
   }
