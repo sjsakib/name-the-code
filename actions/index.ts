@@ -11,6 +11,8 @@ if (typeof window !== 'undefined') {
   ui = new firebaseui.auth.AuthUI(firebase.auth());
 }
 
+let intervalRef: any;
+
 export const actionTypes = {
   UPDATE_USER: 'UPDATE_USER',
   UPDATE_LIST: 'UPDATE_LIST',
@@ -33,11 +35,28 @@ export function fetchList(dispatch: Dispatch<Action>) {
     });
 }
 
-export function reset(_: any, getState: () => State) {
+export function reset(dispatch: any, getState: () => State) {
   const { user } = getState();
-  firebase.firestore().collection('users').doc(user!.uid).update({
-    passed: []
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(user!.uid)
+    .update({
+      passed: []
+    });
+  dispatch({
+    type: actionTypes.UPDATE,
+    updates: { score: 0, time: 0, life: 1 }
   });
+
+  clearInterval(intervalRef);
+  intervalRef = setInterval(() => {
+    const time = getState().time;
+    dispatch({
+      type: actionTypes.UPDATE,
+      updates: { time: time + 1 }
+    });
+  }, 1000);
 }
 
 export function fetchCodes(dispatch: Dispatch<Action>, getState: () => State) {
@@ -89,7 +108,7 @@ export function changeLan(lan: string) {
 
 export function submit(ans: string) {
   return function(dispatch: Dispatch<Action>, getState: () => State) {
-    let { score, life, currentAlgo, message, data, user } = getState();
+    let { score, life, currentAlgo, message, data, user, list, time } = getState();
     if (currentAlgo === ans) {
       score++;
       message = 'Right!';
@@ -98,11 +117,16 @@ export function submit(ans: string) {
         .collection('users')
         .doc(user!.uid)
         .update({
-          passed: firebase.firestore.FieldValue.arrayUnion(data[ans].name)
+          passed: firebase.firestore.FieldValue.arrayUnion(data[ans].name),
+          time
         });
     } else {
       life--;
       message = 'Wrong!';
+    }
+    const currentIndex = list.indexOf(currentAlgo);
+    if (currentIndex === list.length - 1 || life === 0) {
+      clearInterval(intervalRef);
     }
     dispatch({
       type: actionTypes.UPDATE,

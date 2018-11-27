@@ -101,7 +101,7 @@ export default class Game extends React.Component<
             <div className="row">
               <Label
                 color="green"
-                icon="flag"
+                icon="flag checkered"
                 content="SCORE"
                 size="big"
                 detail={score}

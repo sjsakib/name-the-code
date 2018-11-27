@@ -2,13 +2,14 @@ import React from 'react';
 import { withRouter, SingletonRouter } from 'next/router';
 import firebase from '../lib/firebase';
 import Decorator from '../components/Decorator';
-import { Message, Image, Icon } from 'semantic-ui-react';
+import { Message, Image, Label } from 'semantic-ui-react';
 
 interface Profile {
   name: string;
   photo: string;
   github?: string;
   passed: string[];
+  time: number;
 }
 
 interface Props {
@@ -38,21 +39,36 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
 
   render() {
     const { profile, error } = this.props;
+    const { name, photo, github, passed, time } = profile || {} as Profile;
     return (
       <Decorator>
         {error ? (
           <Message error header={error} />
         ) : (
           <div className="profile">
-            <Image src={profile!.photo} avatar size="small" />
-            <h1>{profile!.name}</h1>
-            {profile!.github && (
-              <a href={'https://github.com/' + profile!.github}>
-                <Icon name="github" size="large" color="black"/>
+            <Image src={photo} avatar size="small" />
+            <h1>{name}</h1>
+            {github && (
+              <a href={'https://github.com/' + github}>
+                <Label icon="github" color="black" content={github} />
               </a>
             )}
-            <h1>{profile!.passed.length}</h1>
-            {profile!.passed.map(algo => <li key={algo}>{algo}</li>)}
+            <div className="row">
+              <Label
+                color="green"
+                size="large"
+                icon="flag checkered"
+                content="SCORE"
+                detail={passed.length}
+              />
+              <Label
+                color="violet"
+                size="large"
+                icon="hourglass outline"
+                content="TIME"
+                detail={([Math.floor(time/60), time %60].map(x => ('0' + x).slice(-2))).join(':')}
+              /></div>
+            {passed.map(algo => <li key={algo}>{algo}</li>)}
           </div>
         )}
       </Decorator>

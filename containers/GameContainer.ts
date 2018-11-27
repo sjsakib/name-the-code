@@ -43,7 +43,7 @@ const mapStateToProps = (state: State): GameProps => {
     time
   } = state;
   const current = state.codes[currentAlgo];
-  const min = ('0' + (time / 60)).slice(-2);
+  const min = ('0' + Math.floor(time / 60)).slice(-2);
   const sec = ('0' + (time % 60)).slice(-2);
   return {
     status,

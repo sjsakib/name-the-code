@@ -6,7 +6,7 @@ import { State, Status, defaultLan } from './types';
 export const initialState: State = {
   currentAlgo: '',
   score: 0,
-  life: 3,
+  life: 1,
   time: 0,
   currentAns: '',
   message: '',
