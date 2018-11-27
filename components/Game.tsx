@@ -92,7 +92,7 @@ export default class Game extends React.Component<
                 </SyntaxHighlighter>
               </div>
             ) : (
-              'Loading Code...'
+              <Loading message="Fetching Code" />
             )}
           </div>
         </div>
@@ -127,7 +127,7 @@ export default class Game extends React.Component<
               <Dropdown
                 selection
                 options={currentLanOptions}
-                defaultValue={currentLan}
+                value={currentLan}
                 onChange={(e, v) => this.props.changeLan(v.value as string)}
               />
             </div>
@@ -140,15 +140,6 @@ export default class Game extends React.Component<
                 onClick={() => this.setState({ currentAns: op.id })}
               />
             ))}
-            {message && (
-              <div className="row">
-                <Message
-                  header={message}
-                  success={message === 'Right!'}
-                  error={message === 'Wrong!'}
-                />
-              </div>
-            )}
             <div className="row">
               {message === '' ? (
                 currentAns && (
@@ -158,6 +149,15 @@ export default class Game extends React.Component<
                 <Button onClick={() => next()}>Next</Button>
               )}
             </div>
+            {message && (
+              <div className="row">
+                <Message
+                  header={message}
+                  success={message === 'Right!'}
+                  error={message === 'Wrong!'}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
