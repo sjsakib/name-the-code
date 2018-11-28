@@ -67,6 +67,7 @@ export interface GameProps {
   user?: User;
   preferredLan: string;
   currentLan: string;
+  currentAns: string;
   currentLanOptions?: { text: string; value: string}[];
   code?: string;
   life: number,
@@ -81,5 +82,6 @@ export interface GameMethods {
   next: () => void;
   submit: (ans: string) => void;
   changeLan: (lan: string) => void;
+  updateAns: (ans: string) => void;
 }
 

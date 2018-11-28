@@ -121,14 +121,29 @@ export function submit(ans: string) {
     if (currentAlgo === ans) {
       score++;
       message = 'Right!';
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(user!.uid)
-        .update({
+      const db = firebase.firestore();
+      const userRef = db.collection('users').doc(user!.uid);
+      const leaderboardRef = db.collection('leaderboard').doc(user!.uid);
+      const batch = db.batch();
+      batch.set(
+        userRef,
+        {
           passed: firebase.firestore.FieldValue.arrayUnion(data[ans].name),
           time
-        });
+        },
+        { merge: true }
+      );
+      batch.set(
+        leaderboardRef,
+        {
+          score,
+          time,
+          name: user!.name,
+          photo: user!.photo
+        },
+        { merge: true }
+      );
+      batch.commit().then(() => console.log('wrote'));
     } else {
       life--;
       message = 'Wrong!';
@@ -167,6 +182,7 @@ export function next(dispatch: Dispatch<Action>, getState: () => State) {
     updates: {
       currentAlgo: newCurrentAlgo,
       options: getOptions(newCurrentAlgo, list, 2),
+      currentAns: '',
       message: '',
       currentLan: data[currentAlgo].codes[preferredLan]
         ? preferredLan

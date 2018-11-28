@@ -2,14 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { Status, GameProps, GameMethods } from '../types';
 import Loading from '../components/Loading';
-import {
-  Dropdown,
-  Button,
-  Icon,
-  Label,
-  Message,
-  Checkbox
-} from 'semantic-ui-react';
+import { Dropdown, Button, Label, Message, Checkbox } from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 export default class Game extends React.Component<
@@ -42,9 +35,11 @@ export default class Game extends React.Component<
       code,
       life,
       score,
-      time
+      time,
+      currentAns,
+      updateAns
     } = this.props;
-    const { currentAns } = this.state;
+    
     if (authenticating) return <Loading message="Authenticating" />;
 
     if (status === Status.FETCHING_LIST) {
@@ -136,8 +131,8 @@ export default class Game extends React.Component<
                 className="ans-option"
                 label={op.name}
                 key={op.id}
-                checked={this.state.currentAns === op.id}
-                onClick={() => this.setState({ currentAns: op.id })}
+                checked={currentAns === op.id}
+                onClick={() => updateAns(op.id)}
               />
             ))}
             <div className="row">
