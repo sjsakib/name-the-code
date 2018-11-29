@@ -52,7 +52,6 @@ export default (state: State = initialState, action: RootAction) => {
         }
       };
     case actionTypes.SET_PREFERRED_LAN:
-      console.log(state);
       return {
         ...state,
         ...{
