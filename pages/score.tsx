@@ -44,13 +44,13 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
     let title: string;
     if (error) title = error;
     else
-      title = `${name} has scored ${
+      title = `${name} scored ${
         passed ? passed.length : 0
       } playing Name The Code`;
     return (
       <Decorator>
         <CommonHead
-          title={title + ' | Score | Name The Code'}
+          title={title + ' | Name The Code'}
           image={profile && photo}
           description={
             'Recognized codes: ' +
