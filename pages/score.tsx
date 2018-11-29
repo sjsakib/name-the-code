@@ -54,7 +54,7 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
           image={profile && photo}
           description={
             'Recognized codes: ' +
-            passed.reverse().join(', ')
+            [...passed].reverse().join(', ')
           }
         />
         {error ? (

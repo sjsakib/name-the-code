@@ -14,5 +14,13 @@
       "cpp": "codes/kmp.cpp",
       "python": "codes/kmp.py"
     }
+  },
+  "selection-sort": {
+    "level": "easy",
+    "name": "Selection Sort",
+    "codes": {
+      "cpp": "codes/selection-sort.cpp",
+      "python": "codes/selection-sort.py"
+    }
   }
 }
