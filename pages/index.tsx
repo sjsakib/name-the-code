@@ -6,6 +6,7 @@ import { State, HomeMethods, HomeProps } from '../types';
 import { startUI } from '../actions';
 import Loading from '../components/Loading';
 import Decorator from '../components/Decorator';
+import { CommonHead } from '../components/Header';
 import { Header, Button } from 'semantic-ui-react';
 import 'firebaseui/dist/firebaseui.css';
 
@@ -24,9 +25,10 @@ class Page extends React.Component<HomeMethods & HomeProps> {
   }
   render() {
     const { user, authenticating } = this.props;
-    if (authenticating) return <Loading message="Authenticating" />;
+    if (authenticating) return <Loading message="Loading" />;
     return (
       <Decorator active="home">
+        <CommonHead />
         <div className="heading">
           <Header as="h1" content="Name The Code" />
           {user ? (

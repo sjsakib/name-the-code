@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Link from 'next/link';
 import Loading from '../components/Loading';
 import Decorator from '../components/Decorator';
+import { CommonHead } from '../components/Header';
 import firebase from '../lib/firebase';
 import formatTime from '../lib/formatTime';
 import { State, User } from '../types';
@@ -41,13 +42,21 @@ class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
 
   render() {
     const { users } = this.state;
-    if (!users) return <Loading message="Fetching leader board" />;
+    if (!users)
+      return (
+        <>
+          <CommonHead title="Leaderboard | Name The Code" />
+          <Loading message="Fetching leaderboard" />
+        </>
+      );
     const { user } = this.props;
     const rows = users.map((u, i) => {
       const own = user && u.id === user.uid;
       return (
         <Table.Row positive={own} key={u.id}>
-          <Table.Cell>{own ? <Label ribbon>{i+1} </Label> : i+1}</Table.Cell>
+          <Table.Cell>
+            {own ? <Label ribbon>{i + 1} </Label> : i + 1}
+          </Table.Cell>
           <Table.Cell>
             <Link href={'/score?uid=' + u.id}>
               <a>{u.name}</a>
@@ -60,6 +69,7 @@ class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
     });
     return (
       <Decorator active="leaderboard">
+        <CommonHead title="Leaderboard | Name The Code" />
         <Grid stackable columns="2">
           <Grid.Row centered>
             <Grid.Column>

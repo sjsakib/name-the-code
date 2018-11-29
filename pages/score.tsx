@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter, SingletonRouter } from 'next/router';
+import { CommonHead } from '../components/Header';
 import firebase from '../lib/firebase';
 import Decorator from '../components/Decorator';
 import { Message, Image, Label } from 'semantic-ui-react';
@@ -40,8 +41,22 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
   render() {
     const { profile, error } = this.props;
     const { name, photo, github, passed, time } = profile || ({} as Profile);
+    let title: string;
+    if (error) title = error;
+    else
+      title = `${name} has scored ${
+        passed ? passed.length : 0
+      } playing Name The Code`;
     return (
       <Decorator>
+        <CommonHead
+          title={title + '| Name The Code'}
+          image={profile && photo}
+          description={
+            'Recognized codes: ' +
+            passed.reverse().join(',')
+          }
+        />
         {error ? (
           <Message error header={error} />
         ) : (
