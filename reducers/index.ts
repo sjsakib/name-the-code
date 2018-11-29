@@ -1,6 +1,6 @@
 import { initialState } from '../store';
 import { actionTypes } from '../actions';
-import { RootAction, Status, State, defaultLan } from '../types';
+import { RootAction, Status, State, defaultLan, optionCount } from '../types';
 import shuffle from '../lib/shuffle';
 
 export default (state: State = initialState, action: RootAction) => {
@@ -12,6 +12,7 @@ export default (state: State = initialState, action: RootAction) => {
       const medium = shuffle(keys.filter(k => data[k].level === 'medium'));
       const hard = shuffle(keys.filter(k => data[k].level === 'hard'));
       const list = easy.concat(medium).concat(hard);
+      const currentAlgo = list[0];
       return {
         ...state,
         ...{
@@ -20,9 +21,12 @@ export default (state: State = initialState, action: RootAction) => {
           score: 0,
           message: '',
           currentAns: '',
-          currentAlgo: list[0],
-          options: getOptions(list[0], list, 2),
-          status: Status.FETCHED_LIST
+          currentAlgo,
+          options: getOptions(list[0], list, optionCount),
+          status: Status.FETCHED_LIST,
+          currentLan: data[currentAlgo].codes[defaultLan]
+            ? defaultLan
+            : Object.keys(data[currentAlgo].codes)[0]
         }
       };
     case actionTypes.UPDATE_STATUS:
@@ -48,13 +52,16 @@ export default (state: State = initialState, action: RootAction) => {
         }
       };
     case actionTypes.SET_PREFERRED_LAN:
+      console.log(state);
       return {
         ...state,
         ...{
           preferredLan: action.lan,
           currentLan: state.data[state.currentAlgo].codes[action.lan]
             ? action.lan
-            : defaultLan
+            : state.data[state.currentAlgo].codes[defaultLan]
+              ? defaultLan
+              : Object.keys(state.data[state.currentAlgo].codes)[0]
         }
       };
     case actionTypes.CHANGE_LAN:

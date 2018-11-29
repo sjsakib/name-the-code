@@ -49,7 +49,7 @@ export default class Game extends React.Component<
     const lanOptions = [
       { text: 'C++', value: 'cpp' },
       { text: 'Java', value: 'java' },
-      { text: 'Python', value: 'py' }
+      { text: 'Python', value: 'python' }
     ];
 
     if (status === Status.FETCHED_LIST) {

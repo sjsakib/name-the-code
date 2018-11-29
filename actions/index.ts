@@ -3,7 +3,7 @@ import { Dispatch, Action } from 'redux';
 import Router from 'next/router';
 import firebase from '../lib/firebase';
 import { getOptions } from '../reducers';
-import { State, defaultLan, Status } from '../types';
+import { State, defaultLan, Status, optionCount, lifeCount } from '../types';
 
 let firebaseui, ui: any;
 if (typeof window !== 'undefined') {
@@ -46,7 +46,7 @@ export function reset(dispatch: any, getState: () => State) {
     });
   dispatch({
     type: actionTypes.UPDATE,
-    updates: { score: 0, time: 0, life: 1 }
+    updates: { score: 0, time: 0, life: lifeCount }
   });
 
   clearInterval(intervalRef);
@@ -181,12 +181,14 @@ export function next(dispatch: Dispatch<Action>, getState: () => State) {
     type: actionTypes.UPDATE,
     updates: {
       currentAlgo: newCurrentAlgo,
-      options: getOptions(newCurrentAlgo, list, 2),
+      options: getOptions(newCurrentAlgo, list, optionCount),
       currentAns: '',
       message: '',
       currentLan: data[currentAlgo].codes[preferredLan]
         ? preferredLan
-        : defaultLan
+        : data[currentAlgo].codes[defaultLan]
+          ? defaultLan
+          : Object.keys(data[currentAlgo].codes)[0]
     }
   });
 }

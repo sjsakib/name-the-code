@@ -41,6 +41,8 @@ export enum Status {
 }
 
 export const defaultLan = 'cpp';
+export const lifeCount = 3;
+export const optionCount = 2;
 
 export interface RootAction extends Action {
   [key: string]: any;
