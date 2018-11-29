@@ -65,6 +65,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+}
+
+.home-info {
+  max-width: 500px;
+  font-size: 1.2em;
+  margin-bottom: 20px;
 }
 
 .profile {

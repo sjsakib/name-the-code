@@ -71,7 +71,7 @@ export default class Game extends React.Component<
             Start
           </Button>
           <p>
-            <small>**Will reset previous score</small>
+            <small>**Will reset any previous score</small>
           </p>
         </div>
       );

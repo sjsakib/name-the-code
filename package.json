@@ -22,7 +22,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy": "now && now alias"
   },
   "devDependencies": {
     "@types/next": "^7.0.3",

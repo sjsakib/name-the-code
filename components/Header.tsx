@@ -9,7 +9,7 @@ interface Props {
 
 export const CommonHead = ({ title, description, image }: Props) => (
   <Head>
-    <title key="title">
+    <title>
       {title || 'Name The Code | Algorithm and data structure guessing game'}
     </title>
     <meta

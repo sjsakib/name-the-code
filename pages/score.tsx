@@ -50,11 +50,11 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
     return (
       <Decorator>
         <CommonHead
-          title={title + '| Name The Code'}
+          title={title + ' | Score | Name The Code'}
           image={profile && photo}
           description={
             'Recognized codes: ' +
-            passed.reverse().join(',')
+            passed.reverse().join(', ')
           }
         />
         {error ? (

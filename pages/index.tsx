@@ -25,18 +25,25 @@ class Page extends React.Component<HomeMethods & HomeProps> {
   }
   render() {
     const { user, authenticating } = this.props;
-    if (authenticating) return <Loading message="Loading" />;
+    if (authenticating) return <><CommonHead /><Loading message="Loading..." /></>;
     return (
       <Decorator active="home">
         <CommonHead />
         <div className="heading">
           <Header as="h1" content="Name The Code" />
+
+          <div className="home-info">
+            <p>
+              How many data structures and algorithms do you know? Can you
+              recognize them by reading code? Play this game to find out and challenge your friends!
+            </p>
+          </div>
           {user ? (
             <Link href="/play">
               <Button as="a">Start Playing </Button>
             </Link>
           ) : (
-            <div>Sign in to continue</div>
+            <h3>Sign in to continue</h3>
           )}
           <div id="firebaseui-auth-container" />
         </div>
