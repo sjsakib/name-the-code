@@ -2,15 +2,20 @@
   display: flex;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 950px) {
   .grid {
     flex-direction: column;
   }
 }
 
+@media only screen and (min-width: 951px) {
+  .code-panel {
+    max-width: 650px;
+  }
+}
+
 .code-panel {
-  flex-grow: 1;
-  max-width: 650px;
+  flex-grow: 2;
   max-height: 100vh;
   overflow: auto;
 }

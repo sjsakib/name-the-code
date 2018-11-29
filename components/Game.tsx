@@ -39,7 +39,7 @@ export default class Game extends React.Component<
       currentAns,
       updateAns
     } = this.props;
-    
+
     if (authenticating) return <Loading message="Authenticating" />;
 
     if (status === Status.FETCHING_LIST) {
