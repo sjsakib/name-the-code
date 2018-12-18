@@ -7,7 +7,9 @@ import { CommonHead } from '../components/Header';
 import firebase from '../lib/firebase';
 import formatTime from '../lib/formatTime';
 import { State, User } from '../types';
-import { Table, Grid, Label } from 'semantic-ui-react';
+import { Table, Grid, Label, Pagination } from 'semantic-ui-react';
+
+const perPage = 20;
 
 interface Profile {
   id: string;
@@ -19,10 +21,11 @@ interface Profile {
 
 interface LeaderboardState {
   users?: Profile[];
+  page: number;
 }
 
 class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
-  state: LeaderboardState = {};
+  state: LeaderboardState = { page: 0 };
 
   componentDidMount() {
     firebase
@@ -41,7 +44,7 @@ class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
   }
 
   render() {
-    const { users } = this.state;
+    const { users, page } = this.state;
     if (!users)
       return (
         <>
@@ -50,12 +53,14 @@ class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
         </>
       );
     const { user } = this.props;
-    const rows = users.map((u, i) => {
+    const start = page * perPage;
+    const end = start + perPage;
+    const rows = users.slice(start, end).map((u, i) => {
       const own = user && u.id === user.uid;
       return (
         <Table.Row positive={own} key={u.id}>
           <Table.Cell>
-            {own ? <Label ribbon>{i + 1} </Label> : i + 1}
+            {own ? <Label ribbon>{start + i + 1} </Label> : start + i + 1}
           </Table.Cell>
           <Table.Cell>
             <Link href={'/score?uid=' + u.id}>
@@ -83,6 +88,20 @@ class Leaderboard extends React.Component<{ user?: User }, LeaderboardState> {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>{rows}</Table.Body>
+                <Table.Footer>
+                  <Table.Row>
+                    <Table.HeaderCell colSpan={4} textAlign="center">
+                      <Pagination
+                        activePage={page+1}
+                        onPageChange={(e, data) => {
+                          console.log(data);
+                          this.setState({ page: (data.activePage as number) - 1 });
+                        }}
+                        totalPages={Math.ceil(users.length / perPage)}
+                      />
+                    </Table.HeaderCell>
+                  </Table.Row>
+                </Table.Footer>
               </Table>
             </Grid.Column>
           </Grid.Row>
