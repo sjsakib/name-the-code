@@ -32,7 +32,7 @@ class Score extends React.Component<Props & { router: SingletonRouter }> {
         error = 'Profile not found!';
       }
     } catch (e) {
-      throw e;
+      // throw e;
       error = 'Page not found!';
     }
     return { profile: profile && profile.data(), error };
