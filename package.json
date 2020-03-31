@@ -10,7 +10,7 @@
     "axios": "^0.18.0",
     "firebase": "^5.5.8",
     "firebaseui": "^3.4.1",
-    "next": "^7.0.2",
+    "next": "^9.3.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
